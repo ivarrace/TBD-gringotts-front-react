@@ -2,7 +2,7 @@ export const PresupuestoData = {
   id: 1,
   name: "Personal",
   year: 2022,
-  categoriasGastos: [
+  gastos: [
     {
       id: 1,
       name: "Coche",
@@ -81,21 +81,6 @@ function populateGastos(numElementos, min, max) {
   return result;
 }
 
-export const meses = [
-  { id: 1, nombre: "Enero" },
-  { id: 2, nombre: "Febrero" },
-  { id: 3, nombre: "Marzo" },
-  { id: 4, nombre: "Abril" },
-  { id: 5, nombre: "Mayo" },
-  { id: 6, nombre: "Junio" },
-  { id: 7, nombre: "Julio" },
-  { id: 8, nombre: "Agosto" },
-  { id: 9, nombre: "Septiembre" },
-  { id: 10, nombre: "Octubre" },
-  { id: 11, nombre: "Noviembre" },
-  { id: 12, nombre: "Diciembre" },
-];
-
 export const DetalleGastos = {
   from: "ayer",
   to: "hoy",
@@ -107,6 +92,90 @@ export const DetalleGastos = {
     { id: 4, notas: "nota 4", fecha: "hoy", gasto: 16 },
     { id: 5, notas: "nota 5", fecha: "hoy", gasto: 16 },
     { id: 6, notas: "nota 6", fecha: "hoy", gasto: 16 },
+  ],
+  total: 42,
+};
+
+//+++++++++++++++++++++++++++++++++++++++++ NUEVO MODELO -> Resumen presupuesto
+
+const mesOverview = (idMes, cantidad) => {
+  return { mes: idMes, cantidad: cantidad };
+};
+const randomTotales = (min, max) => {
+  const result = [];
+  let total = 0;
+  for (let mes = 1; mes <= 12; mes++) {
+    let actual = Math.floor(Math.random() * (max - min)) + min;
+    total += actual;
+    result.push(mesOverview(mes, actual));
+  }
+  return {
+    mensual: result,
+    total: total,
+    promedio: Math.round((total / 12) * 100) / 100,
+  };
+};
+
+const categoria = (id, parent) => {
+  return {
+    id: parent + "_categoria_" + id,
+    creationDate: "01/01/1970",
+    name: "Categoria_" + id,
+    /* No enviamos movimiento aqui, solo necesitamos los totales. Para ver movimientos hacer nueva llamada
+    movimientos: [
+      movimiento(1, parent + "_categoria_" + id),
+      movimiento(2, parent + "_categoria_" + id),
+      movimiento(3, parent + "_categoria_" + id),
+      movimiento(4, parent + "_categoria_" + id),
+    ],*/
+    totales: randomTotales(10, 50),
+  };
+};
+
+const grupo = (id) => {
+  return {
+    id: "grupo_" + id,
+    creationDate: "01/01/1970",
+    name: "Grupo_" + id,
+    categorias: [
+      categoria(1, "grupo_" + id),
+      categoria(2, "grupo_" + id),
+      categoria(3, "grupo_" + id),
+    ],
+    totales: randomTotales(10, 50),
+  };
+};
+
+export const presupuesto = {
+  id: 1,
+  creationDate: "01/01/1970",
+  name: "Personal",
+  gastos: [grupo(1), grupo(3), grupo(5)],
+  ingresos: [grupo(2)],
+  lastUpdate: "01/01/1970",
+};
+
+//+++++++++++++++++++++++++++++++++++++++++ NUEVO MODELO -> Detalles de gastos
+
+const movimiento = (id) => {
+  return {
+    id: "movimiento_" + id,
+    fecha: "01/01/1970",
+    cantidad: 100 + id,
+    info: id + "L de gasolina",
+  };
+};
+
+export const gastos = {
+  mes: 1,
+  categoria: "grupo_1_categoria_2",
+  registros: [
+    movimiento(1),
+    movimiento(2),
+    movimiento(3),
+    movimiento(4),
+    movimiento(5),
+    movimiento(6),
   ],
   total: 42,
 };

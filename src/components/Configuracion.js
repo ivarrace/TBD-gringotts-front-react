@@ -1,5 +1,5 @@
-import { PresupuestoData } from "../static/MockData";
+import { PresupuestoData, presupuesto } from "../static/MockData";
 
 export default function Configuracion() {
-  return <pre>{JSON.stringify(PresupuestoData, null, 2)}</pre>;
+  return <pre>{JSON.stringify(presupuesto, null, 2)}</pre>;
 }

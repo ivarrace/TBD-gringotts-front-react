@@ -1,40 +1,52 @@
-import TableBody from "@mui/material/TableBody";
+import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TableSectionSubcategoria from "./TableSectionSubcategoria";
+import ModalRegistro from "./ModalRegistro";
 
-export default function GategoriaTable({ categoria }) {
+export default function TableSectionCategoria({ categoria }) {
+  const [open, setOpen] = React.useState(false);
+  const toggleModal = () => setOpen(!open);
+  const [selected, setSelected] = React.useState();
+
+  function handleClick(categoria, movimientoOverview) {
+    const newSelected = {
+      idCategoria: categoria.id,
+      movimientoOverview: movimientoOverview,
+    };
+    setSelected(newSelected);
+    toggleModal();
+  }
+
   return (
-    <TableBody>
-      <TableRow
-        sx={{
-          backgroundColor: "primary.light",
-          /*"&:hover": {
-            backgroundColor: "primary.main",
-            opacity: [0.9, 0.8, 0.7],
-          },*/
-        }}
-      >
+    <>
+      <ModalRegistro
+        open={open}
+        toggleModal={toggleModal}
+        selected={selected}
+      />
+      <TableRow>
+        <TableCell></TableCell>
         <TableCell>{categoria.name}</TableCell>
-        <TableCell>Total al mes</TableCell>
-        {categoria.gastosTotales.mensuales.map((gastoMensual) => {
+        {categoria.totales.mensual.map((movimiento) => {
           return (
-            <TableCell key={"total_" + gastoMensual.mes} align="right">
-              {gastoMensual.total}
+            <TableCell
+              key={movimiento.mes}
+              align="right"
+              onClick={(e) => handleClick(categoria, movimiento)}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}
+            >
+              {movimiento.cantidad}
             </TableCell>
           );
         })}
-        <TableCell align="right">{categoria.gastosTotales.total}</TableCell>
-        <TableCell align="right">{categoria.gastosTotales.promedio}</TableCell>
+        <TableCell align="right">{categoria.totales.total}</TableCell>
+        <TableCell align="right">{categoria.totales.promedio}</TableCell>
       </TableRow>
-      {categoria.subcategorias.map((subcategoria) => {
-        return (
-          <TableSectionSubcategoria
-            key={subcategoria.id}
-            subcategoria={subcategoria}
-          />
-        );
-      })}
-    </TableBody>
+    </>
   );
 }

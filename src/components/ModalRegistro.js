@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { DetalleGastos } from "../static/MockData";
+import { gastos } from "../static/MockData";
 import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
@@ -30,17 +30,29 @@ const style = {
   //"& .MuiTextField-root": { m: 1 },
 };
 
-export default function ModalRegistro({ open, toggleModal }) {
-  const [detalleGastos, setDetalleGastos] = React.useState(DetalleGastos);
+export default function ModalRegistro({ open, toggleModal, selected }) {
+  // API CALL -> detalles mocimientos
+  if (selected != null) {
+    console.log(
+      "Actualizar registros del mes [" +
+        selected.movimientoOverview.mes +
+        "] en la categoria [" +
+        selected.idCategoria +
+        "]. Total actual: " +
+        selected.movimientoOverview.cantidad
+    );
+  }
+  ///test
+  const [detalleGastos, setDetalleGastos] = React.useState(gastos);
   const [fecha, setFecha] = React.useState();
   const [cantidad, setCantidad] = React.useState(0);
-  const [nota, setNota] = React.useState();
+  const [info, setInfo] = React.useState();
   function saveNewRecord() {
     const newGasto = {
       id: Math.random() * (99999 - 7) + 7,
-      notas: nota,
+      info: info,
       fecha: fecha,
-      gasto: cantidad,
+      cantidad: cantidad,
     };
     console.log(newGasto);
     setDetalleGastos({
@@ -70,13 +82,6 @@ export default function ModalRegistro({ open, toggleModal }) {
         </Toolbar>
         <Stack direction="row" spacing={2}>
           <TextField
-            id="new-fecha"
-            label="Fecha"
-            onChange={(event) => {
-              setFecha(event.target.value);
-            }}
-          />
-          <TextField
             id="new-cantidad"
             label="Cantidad"
             onChange={(event) => {
@@ -84,10 +89,17 @@ export default function ModalRegistro({ open, toggleModal }) {
             }}
           />
           <TextField
-            id="new-nota"
-            label="Nota"
+            id="new-fecha"
+            label="Fecha"
             onChange={(event) => {
-              setNota(event.target.value);
+              setFecha(event.target.value);
+            }}
+          />
+          <TextField
+            id="new-info"
+            label="Info"
+            onChange={(event) => {
+              setInfo(event.target.value);
             }}
           />
           <Button variant="text" color="primary" onClick={saveNewRecord}>
@@ -106,7 +118,7 @@ export default function ModalRegistro({ open, toggleModal }) {
           </Typography>
         </Toolbar>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" stickyHeader>
+          <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
               <TableRow
                 sx={{
@@ -114,8 +126,8 @@ export default function ModalRegistro({ open, toggleModal }) {
                 }}
               >
                 <TableCell>Cantidad</TableCell>
-                <TableCell>Notas</TableCell>
                 <TableCell>Fecha</TableCell>
+                <TableCell>Info</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -124,11 +136,14 @@ export default function ModalRegistro({ open, toggleModal }) {
                   key={row.id}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
+                    "&:nth-of-type(even)": {
+                      backgroundColor: "#f5f5f5",
+                    },
                   }}
                 >
-                  <TableCell>{row.gasto}</TableCell>
-                  <TableCell>{row.notas}</TableCell>
+                  <TableCell>{row.cantidad}</TableCell>
                   <TableCell>{row.fecha}</TableCell>
+                  <TableCell>{row.info}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

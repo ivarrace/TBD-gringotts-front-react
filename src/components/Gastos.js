@@ -5,8 +5,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { PresupuestoData, meses } from "../static/MockData";
-import CategoriaTableSection from "./TableSectionCategoria";
+import { meses } from "../static/utils";
+import { presupuesto } from "../static/MockData";
+import TableSectionGrupo from "./TableSectionGrupo";
+
+// API CALL -> presupuesto
 
 export default function Gastos() {
   return (
@@ -15,7 +18,8 @@ export default function Gastos() {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2}>
-              {PresupuestoData.name} - {PresupuestoData.year}
+              {presupuesto.name} - (Ultima modificacion:{" "}
+              {presupuesto.lastUpdate})
             </TableCell>
             {meses.map((mes) => {
               return (
@@ -32,13 +36,8 @@ export default function Gastos() {
             </TableCell>
           </TableRow>
         </TableHead>
-        {PresupuestoData.categoriasGastos.map((categoriaGasto) => {
-          return (
-            <CategoriaTableSection
-              key={categoriaGasto.id}
-              categoria={categoriaGasto}
-            />
-          );
+        {presupuesto.gastos.map((grupo) => {
+          return <TableSectionGrupo key={grupo.id} grupo={grupo} />;
         })}
       </Table>
     </TableContainer>
