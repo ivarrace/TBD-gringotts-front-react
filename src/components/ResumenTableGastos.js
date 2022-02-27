@@ -4,23 +4,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
+import TableBody from "@mui/material/TableBody";
 import { meses } from "../static/utils";
-import { presupuesto } from "../static/MockData";
-import TableSectionGrupo from "./TableSectionGrupo";
 
-// API CALL -> presupuesto
-
-export default function Gastos() {
+export default function ResumenTableGastos({ presupuesto }) {
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={2}>
-              {presupuesto.name} - (Ultima modificacion:{" "}
-              {presupuesto.lastUpdate})
-            </TableCell>
+            <TableCell colSpan={2}>Gastos</TableCell>
             {meses.map((mes) => {
               return (
                 <TableCell key={mes.id} align="right">
@@ -36,9 +29,25 @@ export default function Gastos() {
             </TableCell>
           </TableRow>
         </TableHead>
-        {presupuesto.gastos.grupos.map((grupo) => {
-          return <TableSectionGrupo key={grupo.id} grupo={grupo} />;
-        })}
+        <TableBody>
+          {presupuesto.gastos.grupos.map((grupo) => {
+            return (
+              <TableRow key={grupo.id}>
+                <TableCell></TableCell>
+                <TableCell>{grupo.name}</TableCell>
+                {grupo.totales.mensual.map((movimiento) => {
+                  return (
+                    <TableCell key={movimiento.mes} align="right">
+                      {movimiento.cantidad}
+                    </TableCell>
+                  );
+                })}
+                <TableCell align="right">{grupo.totales.total}</TableCell>
+                <TableCell align="right">{grupo.totales.promedio}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     </TableContainer>
   );
