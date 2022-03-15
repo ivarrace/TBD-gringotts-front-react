@@ -88,3 +88,84 @@ export const gastos = {
   ],
   total: 42,
 };
+
+//+++++++++++++++++++++++++++++++++++++++++ test
+export const presupuestoExample = {
+  id: 1,
+  creationDate: "01/01/1970",
+  lastUpdate: "01/01/1970",
+  name: "Personal",
+  gastos: [
+    {
+      id: "coche",
+      creationDate: "01/01/1970",
+      name: "Coche",
+      categorias: [
+        {
+          id: "gasolina-coche",
+          creationDate: "01/01/1970",
+          name: "Gasolina",
+          movimientos: [
+            {
+              fecha: "01/01/1970",
+              cantidad: 100.0,
+              info: "3L de gasolina",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "casa",
+      creationDate: "01/01/1970",
+      name: "Casa",
+      categorias: [
+        {
+          id: "alquiler",
+          creationDate: "01/01/1970",
+          name: "Alquiler",
+          movimientos: [
+            {
+              fecha: "01/01/1970",
+              cantidad: 120.0,
+              info: "",
+            },
+          ],
+        },
+        {
+          id: "servicios",
+          creationDate: "01/01/1970",
+          name: "Servicios",
+          movimientos: [
+            {
+              fecha: "01/01/1970",
+              cantidad: 100.0,
+              info: "Gas",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  ingresos: [
+    {
+      id: "trabajo",
+      creationDate: "01/01/1970",
+      name: "Trabajo",
+      categorias: [
+        {
+          id: "nomina",
+          creationDate: "01/01/1970",
+          name: "Nomina",
+          movimientos: [
+            {
+              fecha: "01/01/1970",
+              cantidad: 100.0,
+              info: "",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
