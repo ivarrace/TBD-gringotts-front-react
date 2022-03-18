@@ -8,6 +8,8 @@ import Configuracion from "./Configuracion";
 import Gastos from "./Gastos";
 import Ingresos from "./Ingresos";
 import Resumen from "./Resumen";
+import NotFound from "../static/NotFound";
+import AccountingsService from "../../services/accountings.service";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -29,50 +31,49 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
+export default function Accounting({ id }) {
+  const [accounting, setAccounting] = React.useState();
+  const [actualTab, setActualTab] = React.useState(0);
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+  const changeTabHandle = (event, newTabIndex) => {
+    setActualTab(newTabIndex);
   };
-}
 
-export default function App() {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  React.useEffect(() => {
+    const apiCall = async () => {
+      const promise = await AccountingsService.getById(id);
+      setAccounting(promise.data);
+    };
+    apiCall();
+  }, [id]);
+  if (!accounting) {
+    return <NotFound />;
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={actualTab}
+          onChange={changeTabHandle}
           aria-label="basic tabs example"
         >
-          <Tab label="Configuracion" {...a11yProps(0)} />
-          <Tab label="Gastos" {...a11yProps(1)} />
-          <Tab label="Ingresos" {...a11yProps(2)} />
-          <Tab label="Resumen" {...a11yProps(3)} />
+          <Tab label="Configuracion" />
+          <Tab label="Gastos" />
+          <Tab label="Ingresos" />
+          <Tab label="Resumen" />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={actualTab} index={0}>
         <Configuracion />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={actualTab} index={1}>
         <Gastos />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={actualTab} index={2}>
         <Ingresos />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={actualTab} index={3}>
         <Resumen />
       </TabPanel>
     </Box>

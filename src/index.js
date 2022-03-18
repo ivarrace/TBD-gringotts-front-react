@@ -5,10 +5,10 @@ import reportWebVitals from "./reportWebVitals";
 import SignIn from "./components/SignIn/SignIn";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthService from "./services/auth.service";
-import App from "./components/Accounting/App";
 import Dashboard from "./components/Dashboard";
 import DashboardExample from "./components/Dashboard";
 import NotFound from "./components/static/NotFound";
+import Accounting from "./components/Accounting";
 
 const rootElement = document.getElementById("root");
 
@@ -41,7 +41,12 @@ ReactDOM.render(
             </PrivateRoute>
           }
         >
-          <Route path=":id" element={<App />} />
+          <Route
+            path=":id"
+            element={(id) => {
+              return <Accounting id={id} />;
+            }}
+          />
         </Route>
         <Route
           path="example"

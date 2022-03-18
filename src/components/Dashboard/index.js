@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import ExampleContent from "./ExampleContent";
-import App from "../Accounting/App";
+import Accounting from "../Accounting";
 import { useParams } from "react-router-dom";
 import CustomAppBar from "./CustomAppBar";
 import CustomDrawer from "./CustomDrawer";
@@ -22,7 +22,6 @@ function DashboardContent({ section, sectionId }) {
   };
 
   React.useEffect(() => {
-    console.log("Occurs ONCE, AFTER the initial render.");
     const apiCall = async () => {
       const promise = await AccountingsService.getAccountings();
       setAccountingList(promise.data);
@@ -33,11 +32,11 @@ function DashboardContent({ section, sectionId }) {
   function renderSwitch(section) {
     switch (section) {
       case "accountings":
-        return <App />;
+        return <Accounting id={sectionId} />;
       case "dashboard":
         return <ExampleContent />;
       default:
-        return <NotFound type={section} id={sectionId} />;
+        return <NotFound type={section} />;
     }
   }
 

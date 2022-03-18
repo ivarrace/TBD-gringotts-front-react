@@ -7,5 +7,9 @@ class AccountingService {
   getAccountings() {
     return axios.get(API_URL + "/", { headers: authHeader() });
   }
+
+  getById(id) {
+    return axios.get(API_URL + "/" + id, { headers: authHeader() });
+  }
 }
 export default new AccountingService();
