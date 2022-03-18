@@ -9,16 +9,26 @@ import { useParams } from "react-router-dom";
 import CustomAppBar from "./CustomAppBar";
 import CustomDrawer from "./CustomDrawer";
 import NotFound from "../static/NotFound";
+import AccountingsService from "../../services/accountings.service";
 
 const drawerWidth = 240;
-
 const mdTheme = createTheme();
 
 function DashboardContent({ section, sectionId }) {
+  const [accountingList, setAccountingList] = React.useState([]);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  React.useEffect(() => {
+    console.log("Occurs ONCE, AFTER the initial render.");
+    const apiCall = async () => {
+      const promise = await AccountingsService.getAccountings();
+      setAccountingList(promise.data);
+    };
+    apiCall();
+  }, []);
 
   function renderSwitch(section) {
     switch (section) {
@@ -41,6 +51,7 @@ function DashboardContent({ section, sectionId }) {
           toggleDrawer={toggleDrawer}
         />
         <CustomDrawer
+          accountingList={accountingList}
           drawerWidth={drawerWidth}
           drawerOpen={open}
           toggleDrawer={toggleDrawer}
@@ -68,6 +79,6 @@ function DashboardContent({ section, sectionId }) {
 
 export default function Dashboard({ section }) {
   const params = useParams();
-  console.log("go to: " + section + "/" + params.id);
+  console.log("go to: " + section + "/" + params.id); //FIXME
   return <DashboardContent section={section} sectionId={params.id} />;
 }

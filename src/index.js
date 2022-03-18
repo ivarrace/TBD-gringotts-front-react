@@ -4,7 +4,6 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import SignIn from "./components/SignIn/SignIn";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import AuthService from "./services/auth.service";
 import App from "./components/Accounting/App";
 import Dashboard from "./components/Dashboard";
@@ -13,28 +12,33 @@ import NotFound from "./components/static/NotFound";
 
 const rootElement = document.getElementById("root");
 
+function PrivateRoute({ children }) {
+  let auth = AuthService.isLogged();
+  if (!auth) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<SignIn />} />
         <Route
           path="/dashboard"
           element={
-            AuthService.isLogged() ? (
-              <Dashboard section="dashboard" />
-            ) : (
-              <Navigate to="/login" />
-            )
+            <PrivateRoute>
+              <Dashboard section="dashboard" />{" "}
+            </PrivateRoute>
           }
         />
         <Route
           path="/accountings"
           element={
-            AuthService.isLogged() ? (
+            <PrivateRoute>
               <Dashboard section="accountings" />
-            ) : (
-              <Navigate to="/login" />
-            )
+            </PrivateRoute>
           }
         >
           <Route path=":id" element={<App />} />
@@ -47,7 +51,9 @@ ReactDOM.render(
         <Route
           path="*"
           element={
-            AuthService.isLogged() ? <NotFound /> : <Navigate to="/login" />
+            <PrivateRoute>
+              <NotFound />
+            </PrivateRoute>
           }
         />
       </Routes>

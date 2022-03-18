@@ -16,7 +16,6 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import AuthService from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
 //https://www.bezkoder.com/react-jwt-auth/
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -30,7 +29,6 @@ export default function SignIn() {
     loading: false,
     message: "",
   });
-  const navigate = useNavigate();
 
   const handleCloseMessage = () => {
     setState({
@@ -50,8 +48,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     await AuthService.login(data.get("email"), data.get("password")).then(
       () => {
-        console.log("llega al navigate");
-        navigate("/dashboard");
+        window.location.href = "/dashboard";
       },
       (error) => {
         const resMessage =
@@ -60,19 +57,13 @@ export default function SignIn() {
             error.response.data.message) ||
           error.message ||
           error.toString();
+        console.log(resMessage);
         setState({
           loading: false,
           message: resMessage,
         });
       }
     );
-    if (AuthService.isLogged()) {
-      console.log("isLogged OK");
-      navigate("/dashboard");
-    } else {
-      console.log("isLogged FAIL");
-    }
-    console.log(event);
   };
 
   return (

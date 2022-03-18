@@ -11,6 +11,7 @@ export default function CustomDrawer({
   drawerWidth,
   drawerOpen,
   toggleDrawer,
+  accountingList,
 }) {
   const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -52,7 +53,7 @@ export default function CustomDrawer({
         </IconButton>
       </Toolbar>
       <Divider />
-      <NavigationList />
+      <NavigationList accountingList={accountingList} />
     </Drawer>
   );
 }

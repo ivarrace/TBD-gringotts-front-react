@@ -1,41 +1,39 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/auth/";
+const API_URL = "http://localhost:8080/auth";
 const SESSION_STORAGE_ITEM = "gringotts-user";
 
 class AuthService {
-  login(username, password) {
+  async login(username, password) {
     return axios
-      .post(API_URL + "login", {
+      .post(API_URL + "/login", {
         username,
         password,
       })
       .then((response) => {
         if (response.data.accessToken) {
-          sessionStorage.setItem(
+          window.sessionStorage.setItem(
             SESSION_STORAGE_ITEM,
             JSON.stringify(response.data)
           );
-          this.getCurrentUser();
+          //this.getCurrentUser();
         }
         return response.data;
       });
   }
 
   getCurrentUser() {
-    return JSON.parse(sessionStorage.getItem(SESSION_STORAGE_ITEM));
+    return JSON.parse(window.sessionStorage.getItem(SESSION_STORAGE_ITEM));
   }
 
   isLogged() {
     const user = this.getCurrentUser();
-    console.log("check sessionStorage");
-    console.log(user);
     return user && user.accessToken;
   }
 
   logout() {
-    sessionStorage.removeItem(SESSION_STORAGE_ITEM);
-    //this.props.navigate("/");
+    window.sessionStorage.removeItem(SESSION_STORAGE_ITEM);
+    window.location.href = "/";
   }
 
   //register(username, email, password) {

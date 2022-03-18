@@ -1,11 +1,11 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:8080/dashboard";
+const API_URL = "http://localhost:8080/accounting";
 
-class DashboardService {
-  getDashboardData() {
+class AccountingService {
+  getAccountings() {
     return axios.get(API_URL + "/", { headers: authHeader() });
   }
 }
-export default new DashboardService();
+export default new AccountingService();
