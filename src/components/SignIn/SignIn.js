@@ -15,55 +15,64 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import AuthService from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
+//https://www.bezkoder.com/react-jwt-auth/
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
 export default function SignIn() {
-  const [loginError, setLoginError] = React.useState("");
-  const handleSubmit = (event) => {
+  const [state, setState] = React.useState({
+    username: "",
+    password: "",
+    loading: false,
+    message: "",
+  });
+  const navigate = useNavigate();
+
+  const handleCloseMessage = () => {
+    setState({
+      username: "",
+      password: "",
+      loading: false,
+      message: "",
+    });
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setState({
+      message: "",
+      loading: true,
+    });
     const data = new FormData(event.currentTarget);
-    const user = {
-      username: data.get("email"),
-      password: data.get("password"),
-    };
-    console.log(user);
-    //test api call
-    axios
-      .post(`http://localhost:8080/auth`, user)
-      .then((res) => {
-        setLoginError("");
-        console.log(res);
-        console.log(res.data);
-      })
-      .catch(function (error) {
-        if (error.response.status === 401) {
-          setLoginError("Invalid credentials");
-        } else {
-          setLoginError("Validation error");
-        }
-      });
+    await AuthService.login(data.get("email"), data.get("password")).then(
+      () => {
+        console.log("llega al navigate");
+        navigate("/dashboard");
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setState({
+          loading: false,
+          message: resMessage,
+        });
+      }
+    );
+    if (AuthService.isLogged()) {
+      console.log("isLogged OK");
+      navigate("/dashboard");
+    } else {
+      console.log("isLogged FAIL");
+    }
+    console.log(event);
   };
 
   return (
@@ -91,7 +100,7 @@ export default function SignIn() {
             sx={{ mt: 1 }}
           >
             <TextField
-              error={loginError !== ""}
+              error={state.message !== ""}
               margin="normal"
               required
               fullWidth
@@ -102,7 +111,7 @@ export default function SignIn() {
               autoFocus
             />
             <TextField
-              error={loginError !== ""}
+              error={state.message !== ""}
               margin="normal"
               required
               fullWidth
@@ -116,15 +125,17 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={state.loading}
             >
               Sign In
             </Button>
-            <Collapse in={loginError !== ""}>
+            <Collapse in={state.message !== ""}>
               <Alert
                 severity="error"
                 action={
@@ -132,16 +143,14 @@ export default function SignIn() {
                     aria-label="close"
                     color="inherit"
                     size="small"
-                    onClick={() => {
-                      setLoginError("");
-                    }}
+                    onClick={handleCloseMessage}
                   >
                     <CloseIcon fontSize="inherit" />
                   </IconButton>
                 }
                 sx={{ mb: 2 }}
               >
-                {loginError}
+                {state.message}
               </Alert>
             </Collapse>
             <Grid container>
@@ -158,7 +167,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
