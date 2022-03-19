@@ -81,6 +81,5 @@ function DashboardContent({ section, sectionId }) {
 
 export default function Dashboard({ section }) {
   const params = useParams();
-  console.log("go to: " + section + "/" + params.id); //FIXME
   return <DashboardContent section={section} sectionId={params.id} />;
 }
