@@ -48,7 +48,7 @@ const grupo = (id) => {
   };
 };
 
-export const presupuesto = {
+export const presupuestoMock = {
   id: 1,
   creationDate: "01/01/1970",
   name: "Personal",

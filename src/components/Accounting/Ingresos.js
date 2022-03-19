@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import { meses } from "../static/utils";
-import { presupuesto } from "../static/MockData";
+import { presupuestoMock } from "../static/MockData";
 import TableSectionGrupo from "./TableSectionGrupo";
 
 export default function Ingresos() {
@@ -16,8 +16,8 @@ export default function Ingresos() {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2}>
-              {presupuesto.name} - (Ultima modificacion:{" "}
-              {presupuesto.lastUpdate})
+              {presupuestoMock.name} - (Ultima modificacion:{" "}
+              {presupuestoMock.lastUpdate})
             </TableCell>
             {meses.map((mes) => {
               return (
@@ -34,7 +34,7 @@ export default function Ingresos() {
             </TableCell>
           </TableRow>
         </TableHead>
-        {presupuesto.ingresos.grupos.map((grupo) => {
+        {presupuestoMock.ingresos.grupos.map((grupo) => {
           return <TableSectionGrupo key={grupo.id} grupo={grupo} />;
         })}
       </Table>

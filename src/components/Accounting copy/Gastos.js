@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import { meses } from "../static/utils";
-import { presupuestoMock } from "../static/MockData";
+import { presupuesto } from "../static/MockData";
 import TableSectionGrupo from "./TableSectionGrupo";
 
 // API CALL -> presupuesto
@@ -18,8 +18,8 @@ export default function Gastos() {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2}>
-              {presupuestoMock.name} - (Ultima modificacion:{" "}
-              {presupuestoMock.lastUpdate})
+              {presupuesto.name} - (Ultima modificacion:{" "}
+              {presupuesto.lastUpdate})
             </TableCell>
             {meses.map((mes) => {
               return (
@@ -36,7 +36,7 @@ export default function Gastos() {
             </TableCell>
           </TableRow>
         </TableHead>
-        {presupuestoMock.gastos.grupos.map((grupo) => {
+        {presupuesto.gastos.grupos.map((grupo) => {
           return <TableSectionGrupo key={grupo.id} grupo={grupo} />;
         })}
       </Table>

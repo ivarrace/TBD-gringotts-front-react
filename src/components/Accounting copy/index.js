@@ -6,9 +6,9 @@ import Box from "@mui/material/Box";
 import Configuracion from "./Configuracion";
 import Gastos from "./Gastos";
 import Ingresos from "./Ingresos";
+import Resumen from "./Resumen";
 import NotFound from "../static/NotFound";
 import AccountingsService from "../../services/accountings.service";
-import Summary from "./Summary";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,15 +57,14 @@ export default function Accounting({ id }) {
           onChange={changeTabHandle}
           aria-label="basic tabs example"
         >
-          <Tab label="Resumen" />
+          <Tab label="Configuracion" />
           <Tab label="Gastos" />
           <Tab label="Ingresos" />
-          <Tab label="Configuracion" />
+          <Tab label="Resumen" />
         </Tabs>
       </Box>
-
       <TabPanel value={actualTab} index={0}>
-        <Summary data={accounting} />
+        <Configuracion />
       </TabPanel>
       <TabPanel value={actualTab} index={1}>
         <Gastos />
@@ -74,7 +73,7 @@ export default function Accounting({ id }) {
         <Ingresos />
       </TabPanel>
       <TabPanel value={actualTab} index={3}>
-        <Configuracion />
+        <Resumen />
       </TabPanel>
     </Box>
   );

@@ -4,22 +4,22 @@ import ResumenTableIngresos from "./ResumenTableIngresos";
 import ResumenTableGastos from "./ResumenTableGastos";
 import Box from "@mui/material/Box";
 
-import { presupuestoMock } from "../static/MockData";
+import { presupuesto } from "../static/MockData";
 
 export default function Resumen() {
   return (
     <Box>
       <Box pt={3}>
-        <ResumenChart presupuesto={presupuestoMock} />
+        <ResumenChart presupuesto={presupuesto} />
       </Box>
       <Box pt={3}>
-        <ResumenTableTotales presupuesto={presupuestoMock} />
+        <ResumenTableTotales presupuesto={presupuesto} />
       </Box>
       <Box pt={3}>
-        <ResumenTableIngresos presupuesto={presupuestoMock} />
+        <ResumenTableIngresos presupuesto={presupuesto} />
       </Box>
       <Box pt={3}>
-        <ResumenTableGastos presupuesto={presupuestoMock} />
+        <ResumenTableGastos presupuesto={presupuesto} />
       </Box>
     </Box>
   );

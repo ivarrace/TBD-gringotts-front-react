@@ -1,5 +1,5 @@
 import * as React from "react";
-import { presupuestoMock } from "../static/MockData";
+import { presupuesto } from "../static/MockData";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
 
 export default function Configuracion() {
-  const [grupos, setGrupos] = React.useState(presupuestoMock.gastos.grupos);
+  const [grupos, setGrupos] = React.useState(presupuesto.gastos.grupos);
   const [inputName, setInputName] = React.useState("");
   const [inputError, setInputError] = React.useState("");
 
