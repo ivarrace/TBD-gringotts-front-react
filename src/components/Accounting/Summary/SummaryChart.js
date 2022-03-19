@@ -27,7 +27,6 @@ const dataMapper = (accounting) => {
     });
     monthId++;
   }
-  console.log(result);
   return result;
 };
 

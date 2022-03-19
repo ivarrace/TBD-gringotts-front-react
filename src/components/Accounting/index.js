@@ -4,11 +4,10 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Configuracion from "./Configuracion";
-import Gastos from "./Gastos";
-import Ingresos from "./Ingresos";
 import NotFound from "../static/NotFound";
 import AccountingsService from "../../services/accountings.service";
 import Summary from "./Summary";
+import Groups from "./Groups";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,10 +67,10 @@ export default function Accounting({ id }) {
         <Summary data={accounting} />
       </TabPanel>
       <TabPanel value={actualTab} index={1}>
-        <Gastos />
+        <Groups data={accounting.expenses} />
       </TabPanel>
       <TabPanel value={actualTab} index={2}>
-        <Ingresos />
+        <Groups data={accounting.income} />
       </TabPanel>
       <TabPanel value={actualTab} index={3}>
         <Configuracion />
