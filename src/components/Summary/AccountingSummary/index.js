@@ -6,8 +6,6 @@ import GroupBox from "./GroupBox";
 import AccountingSummaryChartBox from "./AccountingSummaryChartBox";
 
 export default function AccountingSummary({ data }) {
-  console.log(data);
-
   return (
     <Grid item xs={12} md={8} lg={12}>
       <Paper
