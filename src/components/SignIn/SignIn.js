@@ -48,7 +48,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     await AuthService.login(data.get("email"), data.get("password")).then(
       () => {
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       },
       (error) => {
         const resMessage =

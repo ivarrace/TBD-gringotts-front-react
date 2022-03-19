@@ -34,6 +34,14 @@ ReactDOM.render(
           }
         />
         <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Dashboard section="summary" />{" "}
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/accountings"
           element={
             <PrivateRoute>

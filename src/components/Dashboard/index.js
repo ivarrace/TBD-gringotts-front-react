@@ -10,6 +10,7 @@ import CustomAppBar from "./CustomAppBar";
 import CustomDrawer from "./CustomDrawer";
 import NotFound from "../static/NotFound";
 import AccountingsService from "../../services/accountings.service";
+import Summary from "../Summary";
 
 const drawerWidth = 240;
 const mdTheme = createTheme();
@@ -31,6 +32,8 @@ function DashboardContent({ section, sectionId }) {
 
   function renderSwitch(section) {
     switch (section) {
+      case "summary":
+        return <Summary data={accountingList} />;
       case "accountings":
         return <Accounting id={sectionId} />;
       case "dashboard":
