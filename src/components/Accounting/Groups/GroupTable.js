@@ -36,7 +36,7 @@ export default function TableSectionGrupo({ data }) {
         <TableCell align="right">{data.annualTotals.average}</TableCell>
       </TableRow>
       {data.categories.map((category) => {
-        return <CategoryTable key={category.id} data={category} />;
+        return <CategoryTable key={category.id} category={category} />;
       })}
     </TableBody>
   );

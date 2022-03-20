@@ -1,7 +1,7 @@
 import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import ModalRegistro from "../ModalRegistro";
+import RecordsModal from "../RecordsModal";
 
 function jsonToArray(json_parsed) {
   const result = [];
@@ -11,15 +11,15 @@ function jsonToArray(json_parsed) {
   return result;
 }
 
-export default function CategoryTable({ data }) {
+export default function CategoryTable({ category }) {
   const [open, setOpen] = React.useState(false);
   const toggleModal = () => setOpen(!open);
   const [selected, setSelected] = React.useState();
 
-  function handleClick(categoria, movimientoOverview) {
+  function handleClick(month) {
     const newSelected = {
-      idCategoria: categoria.id,
-      movimientoOverview: movimientoOverview,
+      category,
+      month,
     };
     setSelected(newSelected);
     toggleModal();
@@ -27,20 +27,25 @@ export default function CategoryTable({ data }) {
 
   return (
     <>
-      <ModalRegistro
-        open={open}
-        toggleModal={toggleModal}
-        selected={selected}
-      />
+      {selected ? (
+        <RecordsModal
+          open={open}
+          toggleModal={toggleModal}
+          selected={selected}
+        />
+      ) : (
+        <></>
+      )}
+
       <TableRow>
         <TableCell></TableCell>
-        <TableCell>{data.name}</TableCell>
-        {jsonToArray(data.annualTotals.monthly).map((month) => {
+        <TableCell>{category.name}</TableCell>
+        {jsonToArray(category.annualTotals.monthly).map((month) => {
           return (
             <TableCell
               key={month.id}
               align="right"
-              //onClick={(e) => handleClick(data, movimiento)}
+              onClick={(e) => handleClick(month)}
               sx={{
                 "&:hover": {
                   backgroundColor: "primary.main",
@@ -52,8 +57,8 @@ export default function CategoryTable({ data }) {
             </TableCell>
           );
         })}
-        <TableCell align="right">{data.annualTotals.total}</TableCell>
-        <TableCell align="right">{data.annualTotals.average}</TableCell>
+        <TableCell align="right">{category.annualTotals.total}</TableCell>
+        <TableCell align="right">{category.annualTotals.average}</TableCell>
       </TableRow>
     </>
   );
