@@ -131,19 +131,22 @@ export default function CategoryTable({ categories, summary, editable }) {
             })}
             {/* ADD category */}
             {editable ? (
-              <IconButton
-                color="primary"
-                aria-label="add new category"
-                onClick={() => {
-                  alert("Add new category");
-                }}
-              >
-                <AddCircleOutlineIcon />
-              </IconButton>
+              <TableRow>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    aria-label="add new category"
+                    onClick={() => {
+                      alert("Add new category");
+                    }}
+                  >
+                    <AddCircleOutlineIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ) : (
               <></>
             )}
-
             {/* ADD category */}
           </TableBody>
         </Table>

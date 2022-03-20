@@ -14,7 +14,7 @@ export default function GroupTile({ group, editable }) {
     return (
       <Grid container sx={{ mb: 1 }}>
         <Grid item xs={11} md={11} lg={11}>
-          {changeGrouName ? (
+          {changeGrouName && editable ? (
             <TextField
               autoFocus
               fullWidth
@@ -29,7 +29,7 @@ export default function GroupTile({ group, editable }) {
           )}
         </Grid>
         <Grid item xs={1} md={1} lg={1}>
-          {changeGrouName ? (
+          {changeGrouName && editable ? (
             <>
               <IconButton
                 aria-label="Edit group name"
@@ -65,7 +65,7 @@ export default function GroupTile({ group, editable }) {
     );
   }
 
-  const [changeGrouName, setChangeGroupName] = React.useState(false);
+  const [changeGrouName, setChangeGroupName] = React.useState(editable);
   function toggleEditGroupName() {
     setChangeGroupName(!changeGrouName);
   }

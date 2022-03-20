@@ -43,7 +43,7 @@ export default function Report({ report }) {
       </Grid>
       <Grid container spacing={3}>
         {report.groups.map((group) => {
-          return <GroupTile group={group} editable={editable} />;
+          return <GroupTile key={group.id} group={group} editable={editable} />;
         })}
       </Grid>
     </Container>
