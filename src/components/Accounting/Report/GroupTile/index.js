@@ -1,23 +1,75 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import CategoryTable from "./CategoryTable";
+import SaveIcon from "@mui/icons-material/Save";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import CancelIcon from "@mui/icons-material/Cancel";
+import TextField from "@mui/material/TextField";
 
-function Title(props) {
-  return (
-    <Typography component="h2" variant="h6" color="primary" gutterBottom>
-      {props.children}
-    </Typography>
-  );
-}
+export default function GroupTile({ group, editable }) {
+  function Title({ group }) {
+    return (
+      <Grid container sx={{ mb: 1 }}>
+        <Grid item xs={11} md={11} lg={11}>
+          {changeGrouName ? (
+            <TextField
+              autoFocus
+              fullWidth
+              label={group.name}
+              size="small"
+              variant="standard"
+            />
+          ) : (
+            <Typography component="h2" variant="h6" color="primary">
+              {group.name}
+            </Typography>
+          )}
+        </Grid>
+        <Grid item xs={1} md={1} lg={1}>
+          {changeGrouName ? (
+            <>
+              <IconButton
+                aria-label="Edit group name"
+                color="primary"
+                onClick={() => {
+                  alert("Change:" + group.name);
+                }}
+                sx={{ mb: 2 }}
+              >
+                <SaveIcon />
+              </IconButton>
+              <IconButton
+                aria-label="Edit group name"
+                color="primary"
+                onClick={toggleEditGroupName}
+                sx={{ mb: 2 }}
+              >
+                <CancelIcon />
+              </IconButton>
+            </>
+          ) : (
+            <IconButton
+              aria-label="Edit group name"
+              color="primary"
+              onClick={toggleEditGroupName}
+              sx={{ mb: 2, display: editable ? "" : "none" }}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+        </Grid>
+      </Grid>
+    );
+  }
 
-Title.propTypes = {
-  children: PropTypes.node,
-};
+  const [changeGrouName, setChangeGroupName] = React.useState(false);
+  function toggleEditGroupName() {
+    setChangeGroupName(!changeGrouName);
+  }
 
-export default function GroupTile({ group }) {
   return (
     <Grid item xs={12} md={12} lg={12}>
       <Paper
@@ -27,11 +79,12 @@ export default function GroupTile({ group }) {
           flexDirection: "column",
         }}
       >
-        <Title>{group.name}</Title>
+        <Title group={group} />
         <Grid container spacing={2} sx={{ pl: 2 }}>
           <CategoryTable
             categories={group.categories}
             summary={group.annualTotals}
+            editable={editable}
           />
         </Grid>
       </Paper>

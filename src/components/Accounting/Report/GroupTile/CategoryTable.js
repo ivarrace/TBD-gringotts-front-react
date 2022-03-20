@@ -8,6 +8,8 @@ import { meses } from "../../../static/utils";
 import RecordsModal from "../../RecordsModal";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import IconButton from "@mui/material/IconButton";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 function jsonToArray(json_parsed) {
   const result = [];
@@ -18,32 +20,31 @@ function jsonToArray(json_parsed) {
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
+  /*[`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-  },
+  },*/
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
+  /*// hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
-  },
+  },*/
 }));
 
-export default function CategoryTable({ categories, summary }) {
-  console.log(summary);
+export default function CategoryTable({ categories, summary, editable }) {
   const [openModal, setOpenModal] = React.useState(false);
   const toggleModal = () => setOpenModal(!openModal);
   const [selected, setSelected] = React.useState();
 
-  function handleClick(category, month) {
+  function handleClickRecords(category, month) {
     const newSelected = {
       category,
       month,
@@ -51,6 +52,7 @@ export default function CategoryTable({ categories, summary }) {
     setSelected(newSelected);
     toggleModal();
   }
+
   return (
     <>
       {selected ? (
@@ -99,14 +101,14 @@ export default function CategoryTable({ categories, summary }) {
             </StyledTableRow>
             {categories.map((category) => {
               return (
-                <TableRow>
+                <TableRow key={category.id}>
                   <TableCell>{category.name}</TableCell>
                   {jsonToArray(category.annualTotals.monthly).map((month) => {
                     return (
                       <TableCell
                         key={"total_" + month.id}
                         align="right"
-                        onClick={(e) => handleClick(category, month)}
+                        onClick={(e) => handleClickRecords(category, month)}
                         sx={{
                           "&:hover": {
                             backgroundColor: "primary.main",
@@ -127,6 +129,22 @@ export default function CategoryTable({ categories, summary }) {
                 </TableRow>
               );
             })}
+            {/* ADD category */}
+            {editable ? (
+              <IconButton
+                color="primary"
+                aria-label="add new category"
+                onClick={() => {
+                  alert("Add new category");
+                }}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+            ) : (
+              <></>
+            )}
+
+            {/* ADD category */}
           </TableBody>
         </Table>
       </TableContainer>
