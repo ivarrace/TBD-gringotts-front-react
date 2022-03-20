@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import NotFound from "../static/NotFound";
 import AccountingsService from "../../services/accountings.service";
 import Summary from "./Summary";
-import Groups from "./Groups";
+import Report from "./Report";
 import Configuration from "./Configuration";
 
 function TabPanel(props) {
@@ -67,10 +67,10 @@ export default function Accounting({ id }) {
         <Summary data={accounting} />
       </TabPanel>
       <TabPanel value={actualTab} index={1}>
-        <Groups data={accounting.expenses} />
+        <Report report={accounting.expenses} />
       </TabPanel>
       <TabPanel value={actualTab} index={2}>
-        <Groups data={accounting.income} />
+        <Report report={accounting.income} />
       </TabPanel>
       <TabPanel value={actualTab} index={3}>
         <Configuration accounting={accounting} />
