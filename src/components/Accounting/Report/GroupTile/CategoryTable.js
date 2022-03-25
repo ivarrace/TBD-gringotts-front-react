@@ -5,11 +5,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import { meses } from "../../../static/utils";
-import RecordsModal from "../../RecordsModal";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CategoryRow from "./CategoryRow";
 
 function jsonToArray(json_parsed) {
   const result = [];
@@ -39,118 +37,58 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },*/
 }));
 
-export default function CategoryTable({ categories, summary, editable }) {
-  const [openModal, setOpenModal] = React.useState(false);
-  const toggleModal = () => setOpenModal(!openModal);
-  const [selected, setSelected] = React.useState();
-
-  function handleClickRecords(category, month) {
-    const newSelected = {
-      category,
-      month,
-    };
-    setSelected(newSelected);
-    toggleModal();
-  }
+export default function CategoryTable({ group, accountingId }) {
+  const summary = group.annualTotals;
+  const [categoryList, setCategoryList] = React.useState(group.categories);
 
   return (
-    <>
-      {selected ? (
-        <RecordsModal
-          open={openModal}
-          toggleModal={toggleModal}
-          selected={selected}
-        />
-      ) : (
-        <></>
-      )}
-      <TableContainer>
-        <Table aria-label="simple table" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              {meses.map((mes) => {
-                return (
-                  <TableCell key={mes.id} align="right">
-                    {mes.nombre}
-                  </TableCell>
-                );
-              })}
-              <TableCell align="right">
-                <b>Total</b>
-              </TableCell>
-              <TableCell align="right">
-                <b>Promedio</b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <StyledTableRow>
-              <StyledTableCell>
-                <b>Total</b>
-              </StyledTableCell>
-              {jsonToArray(summary.monthly).map((month) => {
-                return (
-                  <StyledTableCell key={"total_" + month.id} align="right">
-                    {month.ammount}
-                  </StyledTableCell>
-                );
-              })}
-              <StyledTableCell align="right">{summary.total}</StyledTableCell>
-              <StyledTableCell align="right">{summary.average}</StyledTableCell>
-            </StyledTableRow>
-            {categories.map((category) => {
+    <TableContainer>
+      <Table aria-label="simple table" stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            {meses.map((mes) => {
               return (
-                <TableRow key={category.id}>
-                  <TableCell>{category.name}</TableCell>
-                  {jsonToArray(category.annualTotals.monthly).map((month) => {
-                    return (
-                      <TableCell
-                        key={"total_" + month.id}
-                        align="right"
-                        onClick={(e) => handleClickRecords(category, month)}
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "primary.main",
-                            opacity: [0.9, 0.8, 0.7],
-                          },
-                        }}
-                      >
-                        {month.ammount}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell align="right">
-                    {category.annualTotals.total}
-                  </TableCell>
-                  <TableCell align="right">
-                    {category.annualTotals.average}
-                  </TableCell>
-                </TableRow>
+                <TableCell key={mes.id} align="right">
+                  {mes.nombre}
+                </TableCell>
               );
             })}
-            {/* ADD category */}
-            {editable ? (
-              <TableRow>
-                <TableCell>
-                  <IconButton
-                    color="primary"
-                    aria-label="add new category"
-                    onClick={() => {
-                      alert("Add new category");
-                    }}
-                  >
-                    <AddCircleOutlineIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ) : (
-              <></>
-            )}
-            {/* ADD category */}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+            <TableCell align="right">
+              <b>Total</b>
+            </TableCell>
+            <TableCell align="right">
+              <b>Promedio</b>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <StyledTableRow>
+            <StyledTableCell>
+              <b>Total</b>
+            </StyledTableCell>
+            {jsonToArray(summary.monthly).map((month) => {
+              return (
+                <StyledTableCell key={"total_" + month.id} align="right">
+                  {month.ammount}
+                </StyledTableCell>
+              );
+            })}
+            <StyledTableCell align="right">{summary.total}</StyledTableCell>
+            <StyledTableCell align="right">{summary.average}</StyledTableCell>
+          </StyledTableRow>
+          {categoryList.map((category) => {
+            return (
+              <CategoryRow
+                key={category.id}
+                category={category}
+                group={group}
+                accountingId={accountingId}
+              />
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

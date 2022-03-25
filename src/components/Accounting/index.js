@@ -32,7 +32,6 @@ function TabPanel(props) {
 export default function Accounting({ id }) {
   const [accounting, setAccounting] = React.useState();
   const [actualTab, setActualTab] = React.useState(0);
-
   const changeTabHandle = (event, newTabIndex) => {
     setActualTab(newTabIndex);
   };
@@ -67,10 +66,18 @@ export default function Accounting({ id }) {
         <Summary data={accounting} />
       </TabPanel>
       <TabPanel value={actualTab} index={1}>
-        <Report report={accounting.expenses} />
+        <Report
+          type="expenses"
+          accounting={accounting}
+          updateAccounting={setAccounting}
+        />
       </TabPanel>
       <TabPanel value={actualTab} index={2}>
-        <Report report={accounting.income} />
+        <Report
+          type="income"
+          accounting={accounting}
+          updateAccounting={setAccounting}
+        />
       </TabPanel>
       <TabPanel value={actualTab} index={3}>
         <Configuration accounting={accounting} />

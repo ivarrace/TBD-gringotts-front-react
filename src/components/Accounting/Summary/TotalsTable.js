@@ -43,7 +43,7 @@ export default function TotalsTable({ data }) {
             <TableCell>Ingresos</TableCell>
             {jsonToArray(data.income.annualTotals.monthly).map((month) => {
               return (
-                <TableCell key={month.id} align="right">
+                <TableCell key={"income_"+month.id} align="right">
                   {month.ammount}
                 </TableCell>
               );
@@ -60,7 +60,7 @@ export default function TotalsTable({ data }) {
             <TableCell>Gastos</TableCell>
             {jsonToArray(data.expenses.annualTotals.monthly).map((month) => {
               return (
-                <TableCell key={month.id} align="right">
+                <TableCell key={"expenses_"+month.id} align="right">
                   {month.ammount}
                 </TableCell>
               );
@@ -77,7 +77,7 @@ export default function TotalsTable({ data }) {
             <TableCell>Ahorros</TableCell>
             {jsonToArray(data.savings.monthly).map((month) => {
               return (
-                <TableCell key={month.id} align="right">
+                <TableCell key={"savings_"+month.id} align="right">
                   {month.ammount}
                 </TableCell>
               );
