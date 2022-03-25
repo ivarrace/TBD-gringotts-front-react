@@ -1,14 +1,8 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableBody from "@mui/material/TableBody";
-import { meses } from "../../../static/utils";
-import RecordsModal from "../../RecordsModal";
-import { styled } from "@mui/material/styles";
+import RecordsModal from "./RecordsModal";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import EditableTextField from "../../../Common/EditableTextField";
+
 function jsonToArray(json_parsed) {
   const result = [];
   for (var name in json_parsed) {
@@ -20,10 +14,22 @@ function jsonToArray(json_parsed) {
 export default function CategoryRow({ category, accountingId, group }) {
   const [openModal, setOpenModal] = React.useState(false);
   const toggleModal = () => setOpenModal(!openModal);
+
   const [selected, setSelected] = React.useState();
 
-  function handleClickRecords(category, month) {
+  function handleClickRecords(month) {
     const newSelected = {
+      category,
+      month,
+    };
+    setSelected(newSelected);
+    toggleModal();
+  }
+
+  function showHistory(month) {
+    const newSelected = {
+      idCategoria: category.id,
+      //movimientoOverview: movimientoOverview,
       category,
       month,
     };
@@ -33,6 +39,15 @@ export default function CategoryRow({ category, accountingId, group }) {
 
   return (
     <>
+      {selected ? (
+        <RecordsModal
+          open={openModal}
+          toggleModal={toggleModal}
+          selected={selected}
+        />
+      ) : (
+        <></>
+      )}
       <TableRow key={category.id}>
         <TableCell>{category.name}</TableCell>
         {jsonToArray(category.annualTotals.monthly).map((month) => {
@@ -40,7 +55,7 @@ export default function CategoryRow({ category, accountingId, group }) {
             <TableCell
               key={"total_" + month.id}
               align="right"
-              onClick={(e) => handleClickRecords(category, month)}
+              onClick={(e) => handleClickRecords(month)}
               sx={{
                 "&:hover": {
                   backgroundColor: "primary.main",
