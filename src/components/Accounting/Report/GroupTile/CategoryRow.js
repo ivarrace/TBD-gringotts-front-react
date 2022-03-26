@@ -26,17 +26,6 @@ export default function CategoryRow({ category, accountingId, group }) {
     toggleModal();
   }
 
-  function showHistory(month) {
-    const newSelected = {
-      idCategoria: category.id,
-      //movimientoOverview: movimientoOverview,
-      category,
-      month,
-    };
-    setSelected(newSelected);
-    toggleModal();
-  }
-
   return (
     <>
       {selected ? (

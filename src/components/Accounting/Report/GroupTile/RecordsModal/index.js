@@ -15,6 +15,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
+import * as moment from "moment";
 
 const style = {
   position: "absolute",
@@ -32,7 +33,7 @@ const style = {
 
 export default function RecordsModal({ open, toggleModal, selected }) {
   //FIXME
-  const months = [
+  /*const months = [
     "January",
     "February",
     "March",
@@ -45,8 +46,8 @@ export default function RecordsModal({ open, toggleModal, selected }) {
     "October",
     "November",
     "December",
-  ];
-  function getMonthRecords() {
+  ];*/
+  /*function getMonthRecords() {
     let result = [];
     selected.category.records.forEach((record) => {
       const date = new Date(record.date);
@@ -56,26 +57,41 @@ export default function RecordsModal({ open, toggleModal, selected }) {
       }
     });
     return result;
-  }
+  }*/
 
   ///test
-  const [detalleGastos, setDetalleGastos] = React.useState(
-    selected.category.records
-  );
-  const [fecha, setFecha] = React.useState(new Date());
-  const [cantidad, setCantidad] = React.useState(0);
+  const [records, setRecords] = React.useState(selected.category.records);
+
+  const [newDate, setNewDate] = React.useState("01/01/1970");
+  const [validDate, setValidDate] = React.useState(true);
+  function handleDateChange(value) {
+    let date = moment(value, "DD/MM/YYYY", true);
+    console.log("date change: " + date.format("DD/MM/YYYY"));
+    setValidDate(date.isValid());
+    setNewDate(date.format("DD/MM/YYYY"));
+  }
+
+  const [newAmount, setNewAmount] = React.useState(1);
+  const [validAmount, setValidAmount] = React.useState(true);
+  function handleAmountChange(value) {
+    console.log("amount change: " + value);
+    setValidAmount(!isNaN(value) && value > 0);
+    setNewAmount(value);
+  }
+
   const [info, setInfo] = React.useState();
+
   function saveNewRecord() {
+    if (!validDate || !validAmount) return;
     const newGasto = {
       id: Math.random() * (99999 - 7) + 7,
       info: info,
-      date: fecha,
-      amount: cantidad,
+      date: newDate,
+      amount: newAmount,
     };
     console.log(newGasto);
-    setDetalleGastos([newGasto, ...detalleGastos.registros]);
+    setRecords([newGasto, ...records]);
   }
-
   return (
     <Modal
       keepMounted
@@ -97,18 +113,28 @@ export default function RecordsModal({ open, toggleModal, selected }) {
         </Toolbar>
         <Stack direction="row" spacing={2}>
           <TextField
-            id="new-cantidad"
-            label="Cantidad"
+            required
+            error={!validAmount}
+            helperText={validAmount ? "" : "Incorrect entry."}
+            id="new-amount"
+            label="Amount"
             onChange={(event) => {
-              setCantidad(event.target.value);
+              handleAmountChange(event.target.value);
             }}
+            defaultValue={newAmount}
+            variant="standard"
           />
           <TextField
-            id="new-fecha"
-            label="Fecha"
+            required
+            error={!validDate}
+            helperText={validDate ? "" : "Expected format: DD/MM/YYYY"}
+            id="new-date"
+            label="Date"
             onChange={(event) => {
-              setFecha(event.target.value);
+              handleDateChange(event.target.value);
             }}
+            defaultValue={newDate}
+            variant="standard"
           />
           <TextField
             id="new-info"
@@ -116,6 +142,7 @@ export default function RecordsModal({ open, toggleModal, selected }) {
             onChange={(event) => {
               setInfo(event.target.value);
             }}
+            variant="standard"
           />
           <Button variant="text" color="primary" onClick={saveNewRecord}>
             <SaveIcon />
@@ -132,7 +159,7 @@ export default function RecordsModal({ open, toggleModal, selected }) {
             Historial
           </Typography>
         </Toolbar>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ maxHeight: 250 }}>
           <Table sx={{ minWidth: 650 }} size="small">
             <TableHead>
               <TableRow
@@ -146,7 +173,7 @@ export default function RecordsModal({ open, toggleModal, selected }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {getMonthRecords().map((record) => (
+              {records.map((record) => (
                 <TableRow
                   key={record.id}
                   sx={{
