@@ -106,7 +106,10 @@ export default function Report({ type, accounting, updateAccounting }) {
             <GroupTile
               key={group.id}
               group={group}
-              accountingId={accounting.id}
+              updateAccounting={updateAccounting}
+              accounting={accounting}
+              type={type}
+              groupId={group.id}
             />
           );
         })}

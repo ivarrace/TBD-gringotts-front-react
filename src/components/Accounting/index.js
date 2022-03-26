@@ -7,7 +7,6 @@ import NotFound from "../static/NotFound";
 import AccountingsService from "../../services/accountings.service";
 import Summary from "./Summary";
 import Report from "./Report";
-import Configuration from "./Configuration";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,7 +57,6 @@ export default function Accounting({ id }) {
           <Tab label="Resumen" />
           <Tab label="Gastos" />
           <Tab label="Ingresos" />
-          <Tab label="Configuracion" />
         </Tabs>
       </Box>
 
@@ -78,9 +76,6 @@ export default function Accounting({ id }) {
           accounting={accounting}
           updateAccounting={setAccounting}
         />
-      </TabPanel>
-      <TabPanel value={actualTab} index={3}>
-        <Configuration accounting={accounting} />
       </TabPanel>
     </Box>
   );

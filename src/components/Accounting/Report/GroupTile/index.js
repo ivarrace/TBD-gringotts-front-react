@@ -4,7 +4,16 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import CategoryTable from "./CategoryTable";
 
-export default function GroupTile({ group, accountingId }) {
+export default function GroupTile({
+  updateAccounting,
+  accounting,
+  type,
+  groupId,
+}) {
+  const group =
+    type === "expenses"
+      ? accounting.expenses.groups.find((g) => g.id === groupId)
+      : accounting.income.groups.find((g) => g.id === groupId);
   function Title({ group }) {
     return (
       <Grid container sx={{ mb: 1 }}>
@@ -28,7 +37,12 @@ export default function GroupTile({ group, accountingId }) {
       >
         <Title group={group} />
         <Grid container spacing={2} sx={{ pl: 2 }}>
-          <CategoryTable accountingId={accountingId} group={group} />
+          <CategoryTable
+            updateAccounting={updateAccounting}
+            accounting={accounting}
+            type={type}
+            groupId={groupId}
+          />
         </Grid>
       </Paper>
     </Grid>

@@ -10,6 +10,7 @@ import {
   Bar,
   ComposedChart,
   Cell,
+  ReferenceLine,
 } from "recharts";
 import { meses } from "../../static/utils";
 
@@ -43,7 +44,7 @@ export default function ResumenChart({ data }) {
             <YAxis />
             <Tooltip />
             <Legend />
-
+            <ReferenceLine y={0} stroke="#000" />
             <Bar dataKey="income" barSize={20} fill="#82ca9d">
               {chartData.map((entry, index) => (
                 <Cell key={"income_" + index} />

@@ -37,9 +37,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },*/
 }));
 
-export default function CategoryTable({ group, accountingId }) {
+export default function CategoryTable({
+  updateAccounting,
+  accounting,
+  type,
+  groupId,
+}) {
+  const group =
+    type === "expenses"
+      ? accounting.expenses.groups.find((g) => g.id === groupId)
+      : accounting.income.groups.find((g) => g.id === groupId);
   const summary = group.annualTotals;
-  const [categoryList, setCategoryList] = React.useState(group.categories);
+  const categoryList = group.categories;
 
   return (
     <TableContainer>
@@ -81,9 +90,11 @@ export default function CategoryTable({ group, accountingId }) {
             return (
               <CategoryRow
                 key={category.id}
-                category={category}
-                group={group}
-                accountingId={accountingId}
+                updateAccounting={updateAccounting}
+                accounting={accounting}
+                type={type}
+                groupId={groupId}
+                categoryId={category.id}
               />
             );
           })}

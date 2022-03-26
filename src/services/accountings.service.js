@@ -57,6 +57,40 @@ class AccountingService {
     );
   }
 
+  addRecord(type, accountingId, groupId, categoryId, newRecord) {
+    return axios.post(
+      API_URL +
+        "/" +
+        accountingId +
+        "/" +
+        type +
+        "/" +
+        groupId +
+        "/categories/" +
+        categoryId +
+        "/records",
+      newRecord,
+      { headers: authHeader() }
+    );
+  }
+
+  deleteRecord(type, accountingId, groupId, categoryId, recordId) {
+    return axios.delete(
+      API_URL +
+        "/" +
+        accountingId +
+        "/" +
+        type +
+        "/" +
+        groupId +
+        "/categories/" +
+        categoryId +
+        "/records/" +
+        recordId,
+      { headers: authHeader() }
+    );
+  }
+
   deleteCategory(accountingId, groupId, type, categoryId) {
     return axios.delete(
       API_URL +

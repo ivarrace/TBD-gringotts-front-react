@@ -1,21 +1,11 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import EditableCategoryTable from "./EditableCategoryTable";
-import SaveIcon from "@mui/icons-material/Save";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import CancelIcon from "@mui/icons-material/Cancel";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/TextField";
-import EditOffIcon from "@mui/icons-material/EditOff";
 import Box from "@mui/material/Box";
 import EditableTextField from "../../../Common/EditableTextField";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import AccountingsService from "../../../../services/accountings.service";
 
 export default function EditableGroupTile({
   accountingId,

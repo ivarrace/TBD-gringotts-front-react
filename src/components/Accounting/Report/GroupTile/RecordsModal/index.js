@@ -16,7 +16,10 @@ import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import * as moment from "moment";
+import AccountingsService from "../../../../../services/accountings.service";
 
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import IconButton from "@mui/material/IconButton";
 const style = {
   position: "absolute",
   top: "50%",
@@ -31,70 +34,100 @@ const style = {
   //"& .MuiTextField-root": { m: 1 },
 };
 
-export default function RecordsModal({ open, toggleModal, selected }) {
-  //FIXME
-  /*const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];*/
-  /*function getMonthRecords() {
-    let result = [];
-    selected.category.records.forEach((record) => {
-      const date = new Date(record.date);
-      const recordMonth = months[date.getMonth()].toUpperCase();
-      if (recordMonth === selected.month.id) {
-        result.push(record);
-      }
-    });
-    return result;
-  }*/
+//TODO accountingId groupId categoryId accountiong type
+export default function RecordsModal({
+  open,
+  toggleModal,
+  updateAccounting,
+  accounting,
+  type,
+  groupId,
+  categoryId,
+  defaultDate,
+}) {
+  const allRecords =
+    type === "expenses"
+      ? accounting.expenses.groups
+          .find((g) => g.id === groupId)
+          .categories.find((c) => c.id === categoryId).records
+      : accounting.income.groups
+          .find((g) => g.id === groupId)
+          .categories.find((c) => c.id === categoryId).records;
 
-  ///test
-  const [records, setRecords] = React.useState(selected.category.records);
-
-  const [newDate, setNewDate] = React.useState("01/01/1970");
+  const [newDate, setNewDate] = React.useState(defaultDate);
   const [validDate, setValidDate] = React.useState(true);
   function handleDateChange(value) {
-    let date = moment(value, "DD/MM/YYYY", true);
-    console.log("date change: " + date.format("DD/MM/YYYY"));
+    let date = moment(value, "YYYY-MM-DD", true);
     setValidDate(date.isValid());
-    setNewDate(date.format("DD/MM/YYYY"));
+    setNewDate(date.format("YYYY-MM-DD"));
   }
 
   const [newAmount, setNewAmount] = React.useState(1);
   const [validAmount, setValidAmount] = React.useState(true);
   function handleAmountChange(value) {
-    console.log("amount change: " + value);
     setValidAmount(!isNaN(value) && value > 0);
     setNewAmount(value);
   }
 
   const [info, setInfo] = React.useState();
 
-  function saveNewRecord() {
+  function addRecord() {
     if (!validDate || !validAmount) return;
-    const newGasto = {
-      id: Math.random() * (99999 - 7) + 7,
-      info: info,
+    const newRecord = {
+      info: info ? info : "",
       date: newDate,
       amount: newAmount,
     };
-    console.log(newGasto);
-    setRecords([newGasto, ...records]);
+    const apiCall = async () => {
+      const promise = await AccountingsService.addRecord(
+        type,
+        accounting.id,
+        groupId,
+        categoryId,
+        newRecord
+      );
+      if (promise.status === 200) {
+        updateAccounting(promise.data);
+      } else {
+        console.error(promise);
+      }
+    };
+    apiCall();
+  }
+
+  const deleteRecord = (recordId) => {
+    const apiCall = async () => {
+      const promise = await AccountingsService.deleteRecord(
+        type,
+        accounting.id,
+        groupId,
+        categoryId,
+        recordId
+      );
+      if (promise.status === 200) {
+        updateAccounting(promise.data);
+      } else {
+        console.error(promise);
+      }
+    };
+    apiCall();
+  };
+
+  function filterRecordsBySelectedMonth() {
+    let result = [];
+    allRecords.map((record) => {
+      if (
+        moment(record.date, "YYYY-MM-DD").format("MMMM").toLowerCase() ===
+        moment(defaultDate, "YYYY-MM-DD").format("MMMM").toLowerCase()
+      ) {
+        result.push(record);
+      }
+    });
+    return result;
   }
   return (
     <Modal
-      keepMounted
+      //keepMounted
       open={open}
       onClose={toggleModal}
       aria-labelledby="keep-mounted-modal-title"
@@ -127,13 +160,13 @@ export default function RecordsModal({ open, toggleModal, selected }) {
           <TextField
             required
             error={!validDate}
-            helperText={validDate ? "" : "Expected format: DD/MM/YYYY"}
+            helperText={validDate ? "" : "Expected format: YYYY-MM-DD"}
             id="new-date"
             label="Date"
             onChange={(event) => {
               handleDateChange(event.target.value);
             }}
-            defaultValue={newDate}
+            defaultValue={defaultDate}
             variant="standard"
           />
           <TextField
@@ -144,7 +177,7 @@ export default function RecordsModal({ open, toggleModal, selected }) {
             }}
             variant="standard"
           />
-          <Button variant="text" color="primary" onClick={saveNewRecord}>
+          <Button variant="text" color="primary" onClick={addRecord}>
             <SaveIcon />
           </Button>
         </Stack>
@@ -170,10 +203,11 @@ export default function RecordsModal({ open, toggleModal, selected }) {
                 <TableCell>Cantidad</TableCell>
                 <TableCell>Fecha</TableCell>
                 <TableCell>Info</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {records.map((record) => (
+              {filterRecordsBySelectedMonth().map((record) => (
                 <TableRow
                   key={record.id}
                   sx={{
@@ -186,6 +220,15 @@ export default function RecordsModal({ open, toggleModal, selected }) {
                   <TableCell>{record.amount}</TableCell>
                   <TableCell>{record.date}</TableCell>
                   <TableCell>{record.info}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      aria-label="Edit group"
+                      color="secondary"
+                      onClick={() => deleteRecord(record.id)}
+                    >
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
