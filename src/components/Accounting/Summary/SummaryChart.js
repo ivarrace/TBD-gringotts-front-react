@@ -21,9 +21,9 @@ const dataMapper = (accounting) => {
   for (var name in json_parsed) {
     result.push({
       name: meses[monthId].nombre.substr(0, 3),
-      gastado: accounting.expenses.annualTotals.monthly[name],
-      ingresado: accounting.income.annualTotals.monthly[name],
-      ahorro: json_parsed[name],
+      expenses: -accounting.expenses.annualTotals.monthly[name],
+      income: accounting.income.annualTotals.monthly[name],
+      savings: json_parsed[name],
     });
     monthId++;
   }
@@ -43,19 +43,24 @@ export default function ResumenChart({ data }) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="ingresado" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="gastado" stroke="#8884d8" />
-            <Bar dataKey="ahorro" barSize={20} fill="#413ea0">
+
+            <Bar dataKey="income" barSize={20} fill="#82ca9d">
               {chartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  //stroke={entry.ahorro > 0 ? "green" : "red"}
-                  // cambiar el 75 por 0
-                  //strokeWidth={index === 2 ? 4 : 1}
-                  fill={entry.ahorro > 0 ? "green" : "red"}
-                />
+                <Cell key={"income_" + index} />
               ))}
             </Bar>
+            <Bar dataKey="expenses" barSize={20} fill="#ed514e">
+              {chartData.map((entry, index) => (
+                <Cell key={"expenses_" + index} />
+              ))}
+            </Bar>
+            <Line
+              type="monotone"
+              dataKey="savings"
+              stroke="#8884d8"
+              activeDot={{ r: 4 }}
+              strokeWidth={2}
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </Paper>

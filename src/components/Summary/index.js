@@ -9,7 +9,7 @@ export default function Summary({ data }) {
       <Grid container spacing={3}>
         {/* Accountings */}
         {data.map((accountungSummary) => {
-          return <AccountingSummary data={accountungSummary} />;
+          return <AccountingSummary key="summary" data={accountungSummary} />;
         })}
       </Grid>
     </Container>

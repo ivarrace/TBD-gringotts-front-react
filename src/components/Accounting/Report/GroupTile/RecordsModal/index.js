@@ -62,7 +62,7 @@ export default function RecordsModal({ open, toggleModal, selected }) {
   const [detalleGastos, setDetalleGastos] = React.useState(
     selected.category.records
   );
-  const [fecha, setFecha] = React.useState();
+  const [fecha, setFecha] = React.useState(new Date());
   const [cantidad, setCantidad] = React.useState(0);
   const [info, setInfo] = React.useState();
   function saveNewRecord() {
