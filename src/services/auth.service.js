@@ -22,6 +22,24 @@ class AuthService {
       });
   }
 
+  async register(username, password) {
+    return axios
+      .post(API_URL + "/register", {
+        username,
+        password,
+      })
+      .then((response) => {
+        if (response.data.accessToken) {
+          window.sessionStorage.setItem(
+            SESSION_STORAGE_ITEM,
+            JSON.stringify(response.data)
+          );
+          //this.getCurrentUser();
+        }
+        return response.data;
+      });
+  }
+
   getCurrentUser() {
     return JSON.parse(window.sessionStorage.getItem(SESSION_STORAGE_ITEM));
   }

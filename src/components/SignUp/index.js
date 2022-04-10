@@ -12,18 +12,82 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import AuthService from "../../services/auth.service";
 
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [userNameError, setUserNameError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [state, setState] = React.useState({
+    username: "",
+    password: "",
+    email: "",
+    loading: false,
+    message: "",
+  });
+
+  const clearForm = () => {
+    setUserNameError(false);
+    setPasswordError(false);
+    setState({
+      username: "",
+      password: "",
+      loading: false,
+      message: "",
+    });
+  };
+
+  const validateForm = (data) => {
+    clearForm();
+    let isValidForm = true;
+    const username = data.get("username");
+    if (username === "") {
+      setUserNameError(true);
+      isValidForm = false;
+    }
+    const password = data.get("password");
+    if (password === "") {
+      setPasswordError(true);
+      isValidForm = false;
+    }
+    setState({
+      loading: isValidForm,
+      message: isValidForm ? "" : "Empty required fields",
+    });
+    return isValidForm;
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("userName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    if (validateForm(data)) {
+      await AuthService.register(
+        data.get("username"),
+        data.get("password")
+      ).then(
+        () => {
+          window.location.href = "/";
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          console.log(resMessage);
+          setState({
+            loading: false,
+            message: resMessage,
+          });
+        }
+      );
+    }
   };
 
   return (
@@ -53,16 +117,17 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  error={userNameError}
                   required
                   fullWidth
-                  id="userName"
+                  id="username"
                   label="User Name"
-                  name="userName"
+                  name="username"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  //required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -72,6 +137,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={passwordError}
                   required
                   fullWidth
                   name="password"
@@ -95,9 +161,28 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={state.loading}
             >
               Sign up
             </Button>
+            <Collapse in={state.message !== ""}>
+              <Alert
+                severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={clearForm}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >
+                {state.message}
+              </Alert>
+            </Collapse>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
