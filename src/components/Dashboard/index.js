@@ -33,7 +33,12 @@ function DashboardContent({ section, sectionId }) {
   function renderSwitch(section) {
     switch (section) {
       case "summary":
-        return <Summary data={accountingList} />;
+        return (
+          <Summary
+            accountingList={accountingList}
+            setAccountingList={setAccountingList}
+          />
+        );
       case "accountings":
         return <Accounting id={sectionId} />;
       case "dashboard":

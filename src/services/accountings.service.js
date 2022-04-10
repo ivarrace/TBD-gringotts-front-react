@@ -4,6 +4,16 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:8080/accounting";
 
 class AccountingService {
+  add(newName) {
+    return axios.post(
+      API_URL + "/",
+      {
+        name: newName,
+      },
+      { headers: authHeader() }
+    );
+  }
+
   getAccountings() {
     return axios.get(API_URL + "/", { headers: authHeader() });
   }
