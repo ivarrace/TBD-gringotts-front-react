@@ -124,7 +124,7 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               disabled={state.loading}
             >
-              Sign In
+              Sign in
             </Button>
             <Collapse in={state.message !== ""}>
               <Alert
@@ -151,7 +151,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

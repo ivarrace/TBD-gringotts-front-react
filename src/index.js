@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import SignIn from "./components/SignIn/SignIn";
+import SignIn from "./components/SignIn";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthService from "./services/auth.service";
 import Dashboard from "./components/Dashboard";
 import DashboardExample from "./components/Dashboard";
 import NotFound from "./components/static/NotFound";
 import Accounting from "./components/Accounting";
+import SignUp from "./components/SignUp";
 
 const rootElement = document.getElementById("root");
 
@@ -25,6 +26,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<SignIn />} />
+        <Route path="/register" element={<SignUp />} />
         <Route
           path="/dashboard"
           element={
