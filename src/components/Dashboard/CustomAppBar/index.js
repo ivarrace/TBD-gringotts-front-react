@@ -8,6 +8,8 @@ import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AuthService from "../../../services/auth.service";
+import Stack from "@mui/material/Stack";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 export default function CustomAppBar({
   drawerWidth,
@@ -60,16 +62,26 @@ export default function CustomAppBar({
         >
           Dashboard
         </Typography>
-        <IconButton
-          color="inherit"
-          onClick={() => {
-            AuthService.logout();
-          }}
-        >
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
+        <Stack direction="row" spacing={2}>
+          <IconButton
+            color="inherit"
+            /*onClick={() => {
+              AuthService.logout();
+            }}*/
+          >
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              AuthService.logout();
+            }}
+          >
+            <ExitToAppIcon />
+          </IconButton>
+        </Stack>
       </Toolbar>
     </AppBar>
   );
