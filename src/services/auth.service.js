@@ -1,6 +1,7 @@
 import axios from "axios";
+import Config from "./config";
 
-const API_URL = "http://localhost:8080/auth";
+const API_URL = Config.baseURL + "/auth";
 const SESSION_STORAGE_ITEM = "gringotts-user";
 
 class AuthService {

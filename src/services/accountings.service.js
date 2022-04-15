@@ -1,7 +1,8 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import Config from "./config";
 
-const API_URL = "http://localhost:8080/accounting";
+const API_URL = Config.baseURL + "/accounting";
 
 class AccountingService {
   add(newName) {
