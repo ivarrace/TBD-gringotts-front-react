@@ -72,6 +72,16 @@ export default function NavigationList({ accountingList }) {
         </ListItemIcon>
         <ListItemText primary="Example" />
       </ListItemButton>
+
+      <ListItemButton
+        onClick={() => navigate("/new")}
+        selected={location.pathname === "/new"}
+      >
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="NewUX" />
+      </ListItemButton>
     </List>
   );
 }
