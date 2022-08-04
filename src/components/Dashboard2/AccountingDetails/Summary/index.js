@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import TotalsTable from "./TotalsTable";
 import GroupsTable from "./GroupsTable";
+import { GroupTypes } from "../../../static/utils";
 
 export default function Summary({ accounting }) {
   return (
@@ -9,10 +10,16 @@ export default function Summary({ accounting }) {
         <TotalsTable accountingTotals={accounting.totals} />
       </Box>
       <Box pt={3}>
-        <GroupsTable groupType="income" groupsData={accounting.income} />
+        <GroupsTable
+          groupsData={accounting.income}
+          groupType={GroupTypes.Income}
+        />
       </Box>
       <Box pt={3}>
-        <GroupsTable groupType="expenses" groupsData={accounting.expenses} />
+        <GroupsTable
+          groupsData={accounting.expenses}
+          groupType={GroupTypes.Expense}
+        />
       </Box>
     </Box>
   );

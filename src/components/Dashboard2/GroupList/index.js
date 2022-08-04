@@ -12,7 +12,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   useParams,
 } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -20,11 +19,14 @@ import { accountingGroupsMock } from "./_TestData";
 import { monthsShort } from "../../static/calendarUtils";
 import CategoryTable from "./CategoryTable";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const mdTheme = createTheme();
 
-export default function AccountingDetails() {
+export default function GroupList({ groupType }) {
+  const navigate = useNavigate();
   let { accountingId } = useParams();
   const [accountingGroups, setAccountingGroups] =
     React.useState(accountingGroupsMock);
@@ -39,13 +41,11 @@ export default function AccountingDetails() {
             <Link
               underline="hover"
               color="inherit"
-              to={"/new/" + accountingGroups.id + "/"}
+              onClick={() => navigate("/new/" + accountingGroupsMock.id)}
             >
               {accountingGroups.name}
             </Link>
-            <Typography color="text.primary">
-              {accountingGroups.groupType === "income" ? "Ingresos" : "Gastos"}
-            </Typography>
+            <Typography color="text.primary">{groupType.name}</Typography>
           </Breadcrumbs>
           {accountingGroups.groups.map((group) => {
             return (

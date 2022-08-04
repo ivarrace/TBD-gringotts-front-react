@@ -7,16 +7,23 @@ import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import Link from "@mui/material/Link";
 import { months } from "../../../static/calendarUtils";
+import { useNavigate } from "react-router-dom";
 
 export default function TotalsTable({ groupType, groupsData }) {
+  const navigate = useNavigate();
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell colSpan={2}>
-              <Link href={"/new/test/" + groupType} underline="none">
-                {groupType === "income" ? "Ingresos" : "Gastos"}
+              <Link
+                underline="none"
+                onClick={() => {
+                  navigate(groupType.path);
+                }}
+              >
+                {groupType.name}
               </Link>
             </TableCell>
             {months.map((month) => {

@@ -22,6 +22,7 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "@mui/material/Link";
 import { monthsShort } from "../../static/calendarUtils";
+import { useNavigate } from "react-router-dom";
 
 const dataMapper = (accounting) => {
   let result = [];
@@ -43,6 +44,7 @@ const dataMapper = (accounting) => {
 };
 
 export default function AccountingListItem({ accounting, toggleForm }) {
+  const navigate = useNavigate();
   const chartData = dataMapper(accounting);
   return (
     <Paper
@@ -54,7 +56,7 @@ export default function AccountingListItem({ accounting, toggleForm }) {
       }}
     >
       <Typography variant="h5" color="text.primary" sx={{ mb: 2 }}>
-        <Link href={"/new/" + accounting.id} underline="none">
+        <Link underline="none" onClick={() => navigate(accounting.id)}>
           {accounting.name}
         </Link>
       </Typography>

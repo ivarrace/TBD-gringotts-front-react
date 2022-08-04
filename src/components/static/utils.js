@@ -12,3 +12,8 @@ export const meses = [
   { id: 11, nombre: "Noviembre" },
   { id: 12, nombre: "Diciembre" },
 ];
+
+export const GroupTypes = {
+  Expense: { path: "expenses", name: "Gastos" },
+  Income: { path: "incomes", name: "Ingresos" },
+};

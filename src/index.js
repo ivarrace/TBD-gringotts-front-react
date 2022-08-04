@@ -8,13 +8,14 @@ import AuthService from "./services/auth.service";
 import Dashboard from "./components/Dashboard";
 import AccountingList from "./components/Dashboard2/AccountingList";
 import AccountingDetails from "./components/Dashboard2/AccountingDetails";
-import GroupDetails from "./components/Dashboard2/GroupDetails";
 
 import DashboardExample from "./components/Dashboard";
 import NotFound from "./components/static/NotFound";
 import Accounting from "./components/Accounting";
 import SignUp from "./components/SignUp";
 import RecordList from "./components/Dashboard2/RecordList";
+import GroupList from "./components/Dashboard2/GroupList";
+import { GroupTypes } from "./components/static/utils";
 
 const rootElement = document.getElementById("root");
 
@@ -40,11 +41,24 @@ ReactDOM.render(
             </PrivateRoute>
           }
         />
-        <Route path="/new" element={<AccountingList />}></Route>
-        <Route path="/new/:accountingId" element={<AccountingDetails />} />
-        <Route path="/new/:accountingId/income" element={<GroupDetails />} />
-        <Route path="/new/:accountingId/expenses" element={<GroupDetails />} />
-        <Route path="/records" element={<RecordList />} />
+        <Route path="accountings" element={<AccountingList />}></Route>
+        <Route
+          path="/accountings/:accountingId/"
+          element={<AccountingDetails />}
+        />
+        <Route
+          path={"/accountings/:accountingId/" + GroupTypes.Income.path}
+          element={<GroupList groupType={GroupTypes.Income} />}
+        />
+        <Route
+          path={"/accountings/:accountingId/" + GroupTypes.Expense.path}
+          element={<GroupList groupType={GroupTypes.Expense} />}
+        />
+        <Route
+          path="/accountings/:accountingId/records"
+          element={<RecordList />}
+        />
+
         <Route
           path="/"
           element={

@@ -44,7 +44,7 @@ export default function CategoryTable({ accountingId, groupType, group }) {
                       key={record.id}
                       align="right"
                       onClick={() =>
-                        navigate("/new/accounting1/expenses/ " + group.id)
+                        navigate("/accountings/" + accountingId + "/records")
                       }
                       style={{
                         cursor: "default",
